@@ -1,4 +1,4 @@
-# Day 5 - Agentic RAG API (FastAPI + Postgres + pgvector)
+# Day 5 - Agentic RAG API (FastAPI + Postgres + pgvector + Ollama)
 
 This day replaces the old content with a clean, modular FastAPI project that demonstrates:
 - JWT access/refresh auth
@@ -24,7 +24,7 @@ pip install -r requirements.txt
 ```
 
 2. Create `.env` from `.env.example` and adjust values.
-   Make sure `GEMINI_API_KEY` and Postgres vars are set.
+   Configure Postgres vars and Ollama model names if needed.
 
 3. Run Postgres + pgvector:
 
@@ -50,7 +50,7 @@ python -m scripts.ingest
 uvicorn app.main:app --reload
 ```
 
-## Docker Compose (full stack)
+## Docker Compose (full stack, local LLM)
 
 ```bash
 docker compose up --build
@@ -63,12 +63,16 @@ docker compose exec app python -m scripts.ingest
 ```
 
 Migrations are run automatically on container startup via `entrypoint.sh`.
+Ollama models are pulled automatically on startup (`CHAT_MODEL` and `EMBEDDING_MODEL`).
 
 Frontend dashboard is served at:
 - `http://localhost:5173`
 
 API is served at:
 - `http://localhost:8009`
+
+Ollama API is served at:
+- `http://localhost:11434`
 
 ## API
 - `POST /auth/register` → `{email, name, password}` → returns `{user, tokens}`

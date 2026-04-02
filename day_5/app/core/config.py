@@ -1,4 +1,3 @@
-from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -20,9 +19,9 @@ class Settings(BaseSettings):
     history_window: int = 6
 
     docs_path: str = "../day_4/documents"
-    embedding_model: str = "gemini-embedding-001"
-    chat_model: str = "gemini-2.5-flash"
-    gemini_api_key: str = Field(default="", validation_alias="GEMINI_API_KEY")
+    embedding_model: str = "nomic-embed-text"
+    chat_model: str = "llama3.2:1b"
+    ollama_base_url: str = "http://ollama:11434"
     pgvector_collection: str = "day5_documents"
     chunk_size: int = 1000
     chunk_overlap: int = 150

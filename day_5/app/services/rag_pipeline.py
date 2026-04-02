@@ -1,10 +1,9 @@
-import os
 from pathlib import Path
 from typing import Iterable, List, Sequence
 
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_core.documents import Document
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_ollama import ChatOllama
 from langchain_postgres import PGVector
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
@@ -12,13 +11,10 @@ from app.core.config import settings
 from app.services.embeddings import build_embeddings
 
 
-def build_llm() -> ChatGoogleGenerativeAI:
-    api_key = settings.gemini_api_key or os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        raise RuntimeError("GEMINI_API_KEY is not configured.")
-    return ChatGoogleGenerativeAI(
+def build_llm() -> ChatOllama:
+    return ChatOllama(
         model=settings.chat_model,
-        google_api_key=api_key,
+        base_url=settings.ollama_base_url,
         temperature=0.2,
     )
 
