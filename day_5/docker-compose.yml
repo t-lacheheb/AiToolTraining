@@ -10,7 +10,7 @@ services:
       POSTGRES_HOST: ${POSTGRES_HOST:-db}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
     ports:
-      - "5432:5432"
+      - "5435:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -33,12 +33,24 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-agentic}
       DOCS_PATH: /docs
     ports:
-      - "8000:8000"
+      - "8009:8000"
     depends_on:
       db:
         condition: service_healthy
     volumes:
       - ./documents:/docs:ro
+    networks:
+      - appnet
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5179:80"
+    depends_on:
+      - app
+    restart: unless-stopped
     networks:
       - appnet
 

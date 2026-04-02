@@ -1,4 +1,5 @@
 from uuid import UUID
+from datetime import datetime
 from pydantic import BaseModel
 
 
@@ -9,6 +10,7 @@ class SessionCreate(BaseModel):
 class SessionOut(BaseModel):
     id: UUID
     title: str | None = None
+    created_at: datetime
 
     class Config:
         from_attributes = True
@@ -21,6 +23,7 @@ class MessageCreate(BaseModel):
 class MessageOut(BaseModel):
     role: str
     content: str
+    created_at: datetime
 
 
 class SessionMessagePage(BaseModel):

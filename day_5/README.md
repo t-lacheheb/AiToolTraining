@@ -6,6 +6,7 @@ This day replaces the old content with a clean, modular FastAPI project that dem
 - Short-term memory (last N messages)
 - Long-term memory (per user)
 - RAG over ingested documents stored in pgvector
+- A frontend dashboard to visualize your working day (sessions + message timeline)
 
 ## Structure
 - `app/` FastAPI app
@@ -63,6 +64,12 @@ docker compose exec app python -m scripts.ingest
 
 Migrations are run automatically on container startup via `entrypoint.sh`.
 
+Frontend dashboard is served at:
+- `http://localhost:5173`
+
+API is served at:
+- `http://localhost:8009`
+
 ## API
 - `POST /auth/register` → `{email, name, password}` → returns `{user, tokens}`
 - `POST /auth/login` → `{email, password}` → returns `{user, tokens}`
@@ -70,8 +77,26 @@ Migrations are run automatically on container startup via `entrypoint.sh`.
 - `POST /session` → `{title?}`
 - `GET /sessions`
 - `PUT /session/{id}` → `{content}`
+- `GET /session/{id}?limit=20&offset=0` → paginated message timeline
 
 All session endpoints require `Authorization: Bearer <access_token>`.
+
+## Frontend (Working Day Visualizer)
+
+The frontend app lives in `day_5/frontend` and visualizes:
+- Sessions created during a selected day
+- Timeline of user/assistant messages for a selected session
+- Session/message counters and word totals
+
+### Run locally (frontend only)
+
+```bash
+cd day_5/frontend
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173` and set API base to `http://localhost:8009`.
 
 ## RAG Flow
 When you call `PUT /session/{id}`:

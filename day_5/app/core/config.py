@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     chunk_size: int = 1000
     chunk_overlap: int = 150
     rag_top_k: int = 4
+    cors_origins: str = "*"
 
 
 settings = Settings()
